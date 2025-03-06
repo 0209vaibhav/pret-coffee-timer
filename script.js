@@ -56,7 +56,7 @@ function updateUI() {
     document.getElementById('coffeeCount').textContent = state.coffeeCount;
     
     // Update current date
-    document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+    updateDate();
     
     // Update get coffee button state
     const coffeeBtn = document.getElementById('getCoffeeBtn');
@@ -136,6 +136,34 @@ setInterval(() => {
     }
     updateStatusMessage();
 }, 1000);
+
+function updateDate() {
+    const now = new Date();
+    const options = { 
+        day: 'numeric', 
+        month: 'long', 
+        year: 'numeric',
+        weekday: 'long'
+    };
+    
+    // This will format like "6th March 2024, Thursday"
+    const day = now.getDate();
+    const suffix = getDaySuffix(day);
+    const formattedDate = `${day}${suffix} ${now.toLocaleDateString('en-US', options).replace(/\d+/, '').replace(',', ', ')}`; 
+    
+    document.getElementById('currentDate').textContent = formattedDate;
+}
+
+function getDaySuffix(day) {
+    if (day >= 11 && day <= 13) return 'th';
+    
+    switch (day % 10) {
+        case 1: return 'st';
+        case 2: return 'nd';
+        case 3: return 'rd';
+        default: return 'th';
+    }
+}
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
